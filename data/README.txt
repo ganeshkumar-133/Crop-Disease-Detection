@@ -1,0 +1,1 @@
+This project does not bundle the original flower dataset. The supplied archive's data/train and data/test images are flower images labelled 00, 01 and 02, not plant disease images. Use the included Google Colab notebook to create a plant-disease model from the public PlantVillage dataset.
