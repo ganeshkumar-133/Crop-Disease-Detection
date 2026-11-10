@@ -1,33 +1,88 @@
-# CropShield AI — Improved ONNX Plant Disease Detection
+# CropShield AI 🌱
+AI-Powered Plant Disease Screening & Smart Agriculture Prototype
+CropShield AI is a student-focused computer vision project that explores plant-health screening using image classification and image-region analysis. It provides a local web interface for testing supported plant and soybean image models.
+Important: CropShield AI is an educational prototype, not a validated agricultural diagnostic system. Predictions and highlighted regions must be reviewed by a qualified person before making crop-treatment decisions.
 
-## What changed
-- Image color detection now measures the percentage of chromatic pixels, so a mostly white powdery leaf with visible green areas is less likely to be mislabeled as black-and-white.
-- Displays the percentage of colored pixels and warns about low-resolution images.
-- Shows a readable best-match class name and the top three model scores.
-- Labels the number as a **top-class model score**, not guaranteed diagnostic confidence. Warns when the top result is weak or close to the runner-up.
-- More robust parsing of supported `classes.json` formats and clearer model setup errors.
+# Features
+1. Plant Health Scan
+- Upload JPG, JPEG, PNG, WEBP, or BMP images.
+- Inspect image colour, sharpness, and resolution indicators.
+- Run the included CropGuard ONNX image-classification model.
+- Display the best-matching supported class and the top three model scores.
+- Show warnings when the result is weak or the image may be unsuitable.
+2. Soybean Drone AI
+- Upload soybean images for classification with a dedicated ONNX model.
+- Display class-score rankings for the supported soybean classes.
+- Explore a drone-oriented workflow as an experimental student prototype.
+3. Plant Disease Localization
+- Divide an uploaded image into overlapping regions and scan them.
+- Display candidate regions with bounding boxes.
+- Show the predicted class and model score for each candidate.
+- Apply overlap suppression to reduce duplicate boxes.
+Localization note: The boxes are heuristic candidate regions, not validated lesion detections. The soybean classifier and localization workflow have not been established as reliable aerial/drone-height diagnosis.
+4. Model Training Notebook
+- Includes a Google Colab notebook demonstrating a five-class MobileNetV2 training workflow using the public PlantVillage dataset.
+- The notebook's five target labels are Healthy, Leaf Blight, Mosaic Virus, Rust, and Powdery Mildew.
+- A free Colab GPU is optional and not guaranteed.
+Technology Stack
+Area	Technology
+Programming language	Python
+Web interface	Streamlit
+Image processing	Pillow (PIL), NumPy
+Model inference	ONNX Runtime
+Model format	ONNX
+Training demonstration	TensorFlow / Keras, TensorFlow Datasets
+Training environment	Google Colab
+Installation and Setup (Windows)
+Prerequisites
+- Windows 10 or Windows 11
+- Python 3.10
+- Internet connection for the initial package installation
+# Quick start
+1. Download or clone this repository.
+2. Extract the project ZIP if you downloaded it.
+3. Open the Crop-Disease-Detection-Recreated folder.
+4. Double-click setup.bat and wait for the installation to finish.
+5. Double-click run.bat.
+6. Open the local Streamlit address shown in the terminal. It is usually http://localhost:8501.
+7. Upload a supported image and explore the available pages.
+Run from the terminal
+Open PowerShell or Command Prompt inside the project folder:
+py -3.10 -m pip install -r requirements.txt
+py -3.10 -m streamlit run app.py
+Keep the terminal open while using the application. Press Ctrl+C in the terminal to stop it.
+Models and Attribution
+The main plant classifier uses the CropGuard ONNX model and its matching class-label file. The model files must be kept together and must come from the same repository revision.
 
-## Required model files
-Download these two files from the same model repository: https://huggingface.co/AbhiCommits/cropguard-models/tree/main
-- `cropguard.onnx`
-- `classes.json`
+Model source: https://huggingface.co/AbhiCommits/cropguard-models/tree/main
 
-Copy both into `Crop-Disease-Detection-Recreated\models\`. Keep their filenames unchanged. The model is licensed CC BY-SA 4.0; keep attribution and share-alike terms when redistributing adapted versions.
+The model is identified in the project materials as CC BY-SA 4.0. Review and follow the upstream licence, attribution, and share-alike requirements before redistributing the model or adapted versions.
 
-## Exact Windows setup
-1. Stop the currently running app: focus the black Command Prompt window opened by `run.bat`, press **Ctrl+C**, and wait for it to stop.
-2. Extract this improved ZIP into a new folder (for example, Downloads). Avoid extracting over the old folder.
-3. Open `Crop-Disease-Detection-Recreated`, then open its `models` folder. Copy `cropguard.onnx` and `classes.json` into it. Confirm the files are named exactly as shown.
-4. Double-click `setup.bat`. Wait until it says setup is complete. It needs internet to install Python packages.
-5. Double-click `run.bat`. Keep its black window open.
-6. Open `http://localhost:8501` in your browser and upload a clear, close-up leaf image.
-7. Check the color classification, image resolution note, best-match label, top-class model score, and top-three scores.
+The soybean ONNX model and its class labels are included separately in the models/ directory. Check the source and licence terms for that model before redistributing it.
 
-If setup fails, copy the full error from the black window. Do not close it before copying the message.
-
-## Requirements
-- Windows and Python 3.10 available as `py -3.10`
-- CPU only; no Raspberry Pi and no paid API
-
-## Limitations
-The CropGuard model is trained on PlantVillage close-up detached-leaf images. It lists 38 classes across 14 crops but does not cover every crop or disease. Whole-field drone images are not validated. The model always selects from its supported classes; a high model score is not proof that a crop/disease is supported or correctly diagnosed. Use as a student project aid, not as definitive agricultural advice.
+The training notebook downloads the public PlantVillage dataset through TensorFlow Datasets and obtains MobileNetV2 pretrained weights through Keras. Review the relevant dataset and pretrained-weight terms. The ZIP does not include the PlantVillage image dataset or pretrained disease weights.
+Limitations and Responsible Use
+- The CropGuard model supports a fixed set of 38 classes across 14 crop categories. It cannot identify every crop or plant disease.
+- Its training data is based on close-up detached-leaf images. Performance on field photographs, unusual lighting, different cameras, or aerial drone images is not established.
+- The soybean drone workflow is experimental. Do not interpret its output as validated drone-height disease detection.
+- Localization boxes are candidate regions generated by a prototype workflow. They are not confirmed disease lesions.
+- A model score is not a guaranteed real-world probability or proof of a correct diagnosis.
+- If an image is unclear, unsupported, or outside the model's training distribution, the output may be misleading.
+- Do not use this project alone to select pesticides, apply treatments, or make financial crop-management decisions. Seek expert agricultural advice.
+# Future Improvements
+- Evaluate models on independently collected field images.
+- Improve performance across lighting, camera, crop, and growth-stage variations.
+- Add a properly validated object-detection or segmentation model for lesion localization.
+- Explore a carefully evaluated drone-image pipeline.
+- Add model evaluation reports, including per-class precision, recall, F1-score, and confusion matrices.
+- Improve multilingual support for farmers.
+# Learning Outcomes
+This project provides practical experience with:
+- Building a Python-based interactive ML application.
+- Integrating ONNX models for local inference.
+- Image preprocessing and quality checks.
+- Multi-page Streamlit application development.
+- Image tiling and candidate-region visualization.
+- Exploring transfer learning with MobileNetV2.
+# Disclaimer
+CropShield AI is developed for educational and demonstration purposes. It is not a substitute for laboratory testing, professional plant pathology, or advice from qualified agricultural experts.
